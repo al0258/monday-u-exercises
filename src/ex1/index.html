@@ -1,12 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Exercise 1</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initital-scale=1.0">
+    <title>Exercise 1 - Todo app</title>
     <link rel="stylesheet" href="style.css" />
+    <script src="https://kit.fontawesome.com/5dfbee2ac5.js" crossorigin="anonymous"></script>
 </head>
 <body>
+    <div class="wrapper">
+    <header>Todo App</header>
+    
+    <div class="inputfield">
+        <input type="text" placeholder="Add your new todo">
+        <button><i class="fas fa-plus"></i></button>
+    </div>
+    <ul class="todo-list">
+        <li>
+            Buy milk
+            <span><i class="fas fa-trash"></i></span>
+        </li>
+        <li>
+            another one
+            <span><i class="fas fa-trash"></i></span>
+        </li>
+        <li>
+            and another one
+            <span><i class="fas fa-trash"></i></span>
+        </li>
+    </ul>
+    <div class="footer">
+        <span>You have 3 pending tasks</span>
+        <button>Clear All</button>
+    </div>
+</div>
 
-<h1>Todo list</h1>
 
 
 </body>
