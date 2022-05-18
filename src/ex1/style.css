@@ -104,7 +104,7 @@ body{
     align-items: center;
 }
 
-.footer button{
+.deleteAllButton{
     width: 80px;
     height: 100%;
     border: none;
@@ -115,4 +115,11 @@ body{
     cursor: pointer;
     border-radius: 3px;
     padding: 6px 10px;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.deleteAllButton.active{
+    opacity: 1;
+    pointer-events: auto;
 }
