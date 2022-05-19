@@ -50,7 +50,7 @@ body{
     height: 100%;
     border: none;
     outline: none;
-    background: #8E49E8;
+    background: #BF4CF4;
     color: white;
     font-size: 20px;
     cursor: pointer;
@@ -65,7 +65,7 @@ body{
     pointer-events: auto;
 }
 
-.wrapper .todo-list{
+.todo-list{
     max-height: 250px;
     overflow-y: auto;
 }
@@ -87,7 +87,7 @@ body{
     position: absolute;
     right: -45px;
     color: white;
-    background: #e74c3c;
+    background: #E72901;
     width: 45px;
     text-align: center;
     border-radius: 0 3px 3px 0;
