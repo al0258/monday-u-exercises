@@ -3,6 +3,8 @@ const addButton = document.querySelector(".addTodoButton");
 const todoList = document.querySelector(".todo-list");
 const deleteAllButton = document.querySelector(".deleteAllButton");
 
+showTasks();
+
 inputBox.onkeyup = () => {
     let userData = inputBox.value;
     if (userData.trim()!=0){
@@ -13,9 +15,7 @@ inputBox.onkeyup = () => {
     }
 }
 
-showTasks();
-
-addButton.onclick = () => {
+addButton.addEventListener("click",function(){
     let userData = inputBox.value;
     let getLocalStorage = localStorage.getItem("New Todo");
     if(getLocalStorage == null){
@@ -28,7 +28,7 @@ addButton.onclick = () => {
     localStorage.setItem("New Todo", JSON.stringify(listArr));
     showTasks();
     addButton.classList.remove("active");
-}
+});
 
 function showTasks(){
     let getLocalStorage = localStorage.getItem("New Todo");
@@ -47,11 +47,11 @@ function showTasks(){
     else{
         deleteAllButton.classList.remove("active");
     }
-    let newLiTag = ``;
+    let newListItem = ``;
     listArr.forEach((element, index)=>{
-        newLiTag +=`<li> ${element} <span onclick="deleteTask(${index})"; ><i class="fas fa-trash"></i></span></li>`;
+        newListItem +=`<li> ${element} <span onclick="deleteTask(${index})"; ><i class="fas fa-trash"></i></span></li>`;
     });
-    todoList.innerHTML = newLiTag;
+    todoList.innerHTML = newListItem;
     inputBox.value='';
 }
 
@@ -63,8 +63,8 @@ function deleteTask(index){
     showTasks();
 }
 
-deleteAllButton.onclick = ()=>{
+deleteAllButton.addEventListener("click", function(){
     listArr=[];
     localStorage.setItem("New Todo", JSON.stringify(listArr));
     showTasks();
-}
+});
