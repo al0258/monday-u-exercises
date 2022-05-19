@@ -8,7 +8,10 @@
 body{
     height: 100vh;
     width: 100%;
-    background: linear-gradient(to bottom, #68EACC 0%, #497BE8 100%);
+    /* background: rgb(131,58,180);
+    background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%); */
+    background: rgb(238,174,202);
+    background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
 }
 
 .wrapper{
@@ -20,19 +23,19 @@ body{
     padding: 25px;
 }
 
-.wrapper header{
+.todoHeader{
     font-size: 30px;
     font-weight: 600;
 }
 
-.wrapper .inputfield{
+.inputfield{
     display: flex;
     height: 45px;
     width: 100%;
     margin: 20px 0;
 }
 
-.inputfield input{
+.newTodoInput{
     outline: none;
     width: 85%;
     height: 100%;
@@ -42,7 +45,7 @@ body{
     padding-left: 15px;
 }
 
-.inputfield button{
+.addTodoButton{
     width: 60px;
     height: 100%;
     border: none;
@@ -57,7 +60,7 @@ body{
     pointer-events: none;
 }
 
-.inputfield button.active{
+.addTodoButton.active{
     opacity: 1;
     pointer-events: auto;
 }
@@ -96,7 +99,7 @@ body{
     right: 0px;
 }
 
-.wrapper .footer{
+.todoFooter{
     display: flex;
     width: 100%;
     margin-top: 25px;

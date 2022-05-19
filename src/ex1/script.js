@@ -1,5 +1,5 @@
-const inputBox = document.querySelector(".inputfield input");
-const addButton = document.querySelector(".inputfield button");
+const inputBox = document.querySelector(".newTodoInput");
+const addButton = document.querySelector(".addTodoButton");
 const todoList = document.querySelector(".todo-list");
 const deleteAllButton = document.querySelector(".deleteAllButton");
 
