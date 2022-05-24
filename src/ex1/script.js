@@ -16,16 +16,6 @@ inputBox.addEventListener("keyup", function(){
     }
 });
 
-// inputBox.onkeyup = () => {
-//     let userData = inputBox.value;
-//     if (userData.trim()!==0){
-//         addButton.classList.add("active");
-//     }
-//     else{
-//         addButton.classList.remove("active");
-//     }
-// }
-
 
 function checkIfTasksExist() {
     const getLocalStorage = localStorage.getItem(localStorageName);
