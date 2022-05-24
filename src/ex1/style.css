@@ -23,19 +23,19 @@ body{
     padding: 25px;
 }
 
-.todoHeader{
+.todo-header{
     font-size: 30px;
     font-weight: 600;
 }
 
-.inputfield{
+.input-field{
     display: flex;
     height: 45px;
     width: 100%;
     margin: 20px 0;
 }
 
-.newTodoInput{
+.new-to-do-input{
     outline: none;
     width: 85%;
     height: 100%;
@@ -45,7 +45,7 @@ body{
     padding-left: 15px;
 }
 
-.addTodoButton{
+.add-to-do-button{
     width: 60px;
     height: 100%;
     border: none;
@@ -60,7 +60,7 @@ body{
     pointer-events: none;
 }
 
-.addTodoButton.active{
+.add-to-do-button.active{
     opacity: 1;
     pointer-events: auto;
 }
@@ -99,7 +99,7 @@ body{
     right: 0px;
 }
 
-.todoFooter{
+.todo-footer{
     display: flex;
     width: 100%;
     margin-top: 25px;
@@ -107,7 +107,7 @@ body{
     align-items: center;
 }
 
-.deleteAllButton{
+.delete-all-button{
     width: 80px;
     height: 100%;
     border: none;
@@ -122,7 +122,7 @@ body{
     pointer-events: none;
 }
 
-.deleteAllButton.active{
+.delete-all-button.active{
     opacity: 1;
     pointer-events: auto;
 }
