@@ -6,6 +6,8 @@ const localStorageName = "New Todo";
 
 renderToDoList();
 
+
+//onkeyup
 inputBox.addEventListener("keyup", function(){
     const userData = inputBox.value;
     if (userData.trim()!==0){
