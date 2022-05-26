@@ -154,7 +154,6 @@ export default class Render {
     }
   
     showTaskDetails(item) {
-      console.log(item.done);
       return `<span><span>To do:</span> ${item.text}</span></br>
       <span><span>Creation-date:</span> ${item.time}</span></br>
       ${

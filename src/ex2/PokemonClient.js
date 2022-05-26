@@ -39,9 +39,7 @@ export default class PokemonClient {
     async fetchPokemonByName(name) {
         try {
           const pokemonsList = await this.fetchAllPokemons();
-          const pokemonName = pokemonsList.find(
-            (pokemon) => pokemon.name.toLowerCase() === name.toLowerCase()
-          ).name;
+          const pokemonName = pokemonsList.find((pokemon) => pokemon.name.toLowerCase() === name.toLowerCase()).name;
           return `Catch ${pokemonName}`;
         } catch {
           return false;
