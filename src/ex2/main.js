@@ -13,7 +13,6 @@ class Main {
 
   init() {
     this.render.init();
-    //const addButton = document.getElementById("add-todo");
     const addButton = document.querySelector(".add-to-do-button");
     addButton.addEventListener("click", () => {
         console.log(addButton);
