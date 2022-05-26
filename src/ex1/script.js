@@ -19,7 +19,7 @@ inputBox.addEventListener("keyup", function(){
 });
 
 
-function checkIfTasksExist() {
+function getTasksFromLocalStorage() {
     const getLocalStorage = localStorage.getItem(localStorageName);
     if(getLocalStorage === null){
         listArr = [];
