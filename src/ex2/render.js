@@ -25,16 +25,6 @@ export default class Render {
       });
     }
   
-    get getUserInput() {
-        // Get's the users to do input from the input box
-      return this.userInput.value;
-    }
-  
-    resetInput() {
-        // resets the input
-      this.userInput.value = "";
-    }
-  
     addButtonClicked() {
       if (this.getUserInput) {
         this.checkNewTaskInput(this.getUserInput);
@@ -172,5 +162,15 @@ export default class Render {
         this.alertBox.classList.add("show", type);
         this.alertBoxText.innerHTML = alert;
       }
+    }
+
+    get getUserInput() {
+        // Get's the users to do input from the input box
+      return this.userInput.value;
+    }
+  
+    resetInput() {
+        // resets the input
+      this.userInput.value = "";
     }
   }
