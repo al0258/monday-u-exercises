@@ -34,6 +34,8 @@ export default class PokemonClient {
       }
    }
   
+    
+
     async fetchPokemonNameById(id) {
       try {
         const morePokemonData = await this.getPokemon(id);
@@ -57,8 +59,12 @@ export default class PokemonClient {
     async fetchPokemonByName(name) {
         try {
           // const pokemonsList = await this.fetchAllPokemons();
+          //const pokepok = this.pokemonList.find((pokemon) => pokemon.name.toLowerCase() === name.toLowerCase());
+          const pokemonId = this.pokemonList.findIndex(pokemon => pokemon.name === name);
+          const morePokemonData = await this.getPokemon(pokemonId);
+          const pokemonType = morePokemonData.types[0].type.name;
           const pokemonName = this.pokemonList.find((pokemon) => pokemon.name.toLowerCase() === name.toLowerCase()).name;
-          return `Catch ${pokemonName}`;
+          return `Catch ${pokemonName} the ${pokemonType} type pokemon`;
         } catch {
           return false;
         }
