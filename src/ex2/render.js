@@ -161,7 +161,7 @@ export default class Render {
         // updateTasksNum.call(this);
 
         //Checks if the item was checked
-        //If it is, it dosen't take it from the counter as it was already taken
+        //If it is, it dosen't take it from the counter
         if(!itemToDelete.querySelector('.todo-item-checkbox').checked){
             this.pendingTasksCounter--;
             this.updateTasksNum();
