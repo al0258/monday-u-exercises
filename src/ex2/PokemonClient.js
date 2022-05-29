@@ -22,14 +22,25 @@ export default class PokemonClient {
     async putPokemonsInArray(){
       this.pokemonList = await this.fetchAllPokemons();
     }
+
+    async getPokemon(pokemonID) {
+      try {
+         const response = await fetch(this.API_BASE + '/pokemon/' + pokemonID);
+         const data = await response.json();
+
+         return data;
+      } catch (error) {
+         console.error(error);
+      }
+   }
   
     async fetchPokemonNameById(id) {
       try {
-        // const pokemonsList = await this.fetchAllPokemons();
-        //console.log(this.PLIST);
+        const morePokemonData = await this.getPokemon(id);
+        const pokemonType = morePokemonData.types[0].type.name;
 
         if (this.pokemonList[id].name) {
-          return `Catch ${this.pokemonList[id].name}`;
+          return `Catch ${this.pokemonList[id].name} the ${pokemonType} type pokemon`;
         } 
         else {
           return `Faild to fetch Pokemon with ID ${id}`;

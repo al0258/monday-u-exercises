@@ -22,7 +22,7 @@ export default class Render {
 
         const deleteAllButton = document.querySelector(".delete-all-button");
         deleteAllButton.addEventListener("click", () => {
-            console.log(this.todoListElement.childNodes);
+            // console.log(this.todoListElement.childNodes);
             for (
                 let index = this.todoListElement.childNodes.length - 1; index > 0; index--
             ) {
@@ -65,7 +65,7 @@ export default class Render {
 
     toggleTaskDone(listItem) {
         //Changes the state of which the item is either complete or not complete
-        console.log(listItem);
+        // console.log(listItem);
         listItem.done = !listItem.done;
         if (listItem.done) {
             this.pendingTasksCounter--;
@@ -74,7 +74,7 @@ export default class Render {
         }
         this.updateTasksNum();
         this.taskFinished(listItem.text);
-        console.log(this.pendingTasksCounter);
+        // console.log(this.pendingTasksCounter);
     }
 
     buildNewItem(text, time, done){
@@ -152,7 +152,7 @@ export default class Render {
     }
 
     createNewToDoElement(item) {
-        console.log(item);
+        // console.log(item);
         //create a new list item
         const listItem = document.createElement("li");
 
@@ -181,7 +181,7 @@ export default class Render {
     }
 
     deleteItem(itemToDelete) {
-        console.log(itemToDelete);
+        // console.log(itemToDelete);
         const container = this.todoListElement;
 
         container.removeChild(itemToDelete);
