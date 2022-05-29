@@ -4,13 +4,15 @@ export default class Render {
         this.todoListElement = document.querySelector(".todo-list");
         this.alertBox = document.querySelector(".alert");
         this.alertBoxText = document.querySelector(".alert-inner-text");
-        this.pendingTasksCounter = document.querySelector(".pending-num");
+        this.pendingTasksElement = document.querySelector(".pending-num");
         this.addItem = addItem;
         this.deleteItemHandler = deleteItemHandler;
         this.getAllItems = getAllItems;
+        this.pendingTasksCounter = 0;
     }
 
     init() {
+        this.pendingTasksElement.textContent = (this.todoListElement.childNodes.length - 1);
         this.updateTasksNum();
         const alertBoxCloseBtn = document.querySelector(".alert-close-button");
         alertBoxCloseBtn.addEventListener("click", () => {
@@ -59,16 +61,27 @@ export default class Render {
         }
     }
 
+    toggleTaskDone(listItem){
+        listItem.done = !listItem.done;
+        if(listItem.done){this.pendingTasksCounter--;}
+        else{this.pendingTasksCounter++;}
+        this.updateTasksNum();
+        console.log(this.pendingTasksCounter);
+    }
+
     addNewItem(text) {
         const time = new Date().toLocaleDateString();
         const item = {
             text,
             time,
             done: false,
-            toggleTaskDone() {
-                //Changes the state of which the item is either complete or not complete
-                this.done = !this.done;
-            },
+            // toggleTaskDone() {
+            //     //Changes the state of which the item is either complete or not complete
+            //     this.done = !this.done;
+            //     // if(this.done){this.pendingTasksNumber--;}
+            //     // else{this.pendingTasksNumber++;}
+            //     // console.log(this.pendingTasksNumber);
+            // },
         };
 
         this.addItem(item).then((itemName) => {
@@ -80,42 +93,60 @@ export default class Render {
             }
         });
     }
-
-    createNewToDoElement(item) {
-        //create a new list item
-        const listItem = document.createElement("li");
-
-        // Create the comleted checkbox
+    
+    createCheckBox(item){
         const listItemCheckbox = document.createElement("input");
         listItemCheckbox.setAttribute("type", "checkbox");
         listItemCheckbox.className = "todo-item-checkbox";
         listItemCheckbox.addEventListener("change", () => {
-            item.toggleTaskDone();
+            this.toggleTaskDone(item);
         });
+        return listItemCheckbox;
+    }
 
-        // Add text to the list item
-        const listItemText = document.createElement("span");
-        listItemText.className = "list-item-text";
-        listItemText.innerText = item.text;
-        listItemText.addEventListener("click", () => {
-            this.alert(this.showTaskDetails(item), "info");
-        });
-
+    createRemoveButton(listItem){
         const removeButtonContainer = document.createElement("span");
         removeButtonContainer.classList.add("remove-button");
         removeButtonContainer.innerHTML = `<i class="fas fa-trash"></i>`;
         removeButtonContainer.addEventListener("click", () => {
             this.deleteItem(listItem);
         });
+        return removeButtonContainer;
+    }
+
+    createListItemText(item){
+        const listItemText = document.createElement("span");
+        listItemText.className = "list-item-text";
+        listItemText.innerText = item.text;
+        listItemText.addEventListener("click", () => {
+            this.alert(this.showTaskDetails(item), "info");
+        });
+        return listItemText;
+    }
+
+    createNewToDoElement(item) {
+        //create a new list item
+        const listItem = document.createElement("li");
+
+        // Create the comleted checkbox
+        const listItemCheckbox = this.createCheckBox(item);
+
+        // Add text to the list item
+        const listItemText = this.createListItemText(item);
+
+        // Create remove button
+        const removeButtonContainer = this.createRemoveButton(listItem);
 
         // Build the element
         listItem.appendChild(listItemCheckbox);
         listItem.appendChild(listItemText);
         listItem.appendChild(removeButtonContainer);
+
         // Add the element to the list item
         this.todoListElement.appendChild(listItem);
 
         // Update the amount of tasks
+        this.pendingTasksCounter++;
         this.updateTasksNum();
     }
 
@@ -124,16 +155,22 @@ export default class Render {
         const container = this.todoListElement;
         //itemToDelete.classList.add("leave");
 
-        const updateTasksNum = this.updateTasksNum;
+        // const updateTasksNum = this.updateTasksNum;
 
         container.removeChild(itemToDelete);
-        updateTasksNum.call(this);
+        // updateTasksNum.call(this);
+
+        //Checks if the item was checked
+        //If it is, it dosen't take it from the counter as it was already taken
+        if(!itemToDelete.querySelector('.todo-item-checkbox').checked){
+            this.pendingTasksCounter--;
+            this.updateTasksNum();
+        }
         this.deleteItemHandler(itemToDelete.innerText);
     }
 
     updateTasksNum() {
-        this.pendingTasksCounter.textContent = (
-            this.todoListElement.childNodes.length - 1);
+        this.pendingTasksElement.textContent = (this.pendingTasksCounter);
     }
 
     closeAlertBox() {
