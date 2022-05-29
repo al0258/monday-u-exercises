@@ -1,6 +1,8 @@
 export default class PokemonClient {
     constructor() {
       this.API_BASE = "https://pokeapi.co/api/v2";
+      this.pokemonList = [];
+      this.putPokemonsInArray();
     }
   
     async fetchAllPokemons() {
@@ -16,13 +18,18 @@ export default class PokemonClient {
         (err) => console.log(err);
       }
     }
+
+    async putPokemonsInArray(){
+      this.pokemonList = await this.fetchAllPokemons();
+    }
   
     async fetchPokemonNameById(id) {
       try {
-        const pokemonsList = await this.fetchAllPokemons();
+        // const pokemonsList = await this.fetchAllPokemons();
+        //console.log(this.PLIST);
 
-        if (pokemonsList[id].name) {
-          return `Catch ${pokemonsList[id].name}`;
+        if (this.pokemonList[id].name) {
+          return `Catch ${this.pokemonList[id].name}`;
         } 
         else {
           return `Faild to fetch Pokemon with ID ${id}`;
@@ -38,8 +45,8 @@ export default class PokemonClient {
 
     async fetchPokemonByName(name) {
         try {
-          const pokemonsList = await this.fetchAllPokemons();
-          const pokemonName = pokemonsList.find((pokemon) => pokemon.name.toLowerCase() === name.toLowerCase()).name;
+          // const pokemonsList = await this.fetchAllPokemons();
+          const pokemonName = this.pokemonList.find((pokemon) => pokemon.name.toLowerCase() === name.toLowerCase()).name;
           return `Catch ${pokemonName}`;
         } catch {
           return false;

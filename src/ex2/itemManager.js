@@ -4,6 +4,8 @@ export default class ItemManager {
   constructor() {
     this.tasksList = [];
     this.pokemonClient = new PokemonClient();
+    this.alertBox = document.querySelector(".alert");
+    this.alertBoxText = document.querySelector(".alert-inner-text");
   }
 
   async addItem(item) {
@@ -20,15 +22,41 @@ export default class ItemManager {
         item.text = pokemonName;
       }
     }
-    this.tasksList.push(item);
-    return item.text;
+    if (!this.checkIfItemExists(item.text)){
+      this.tasksList.push(item);
+      return item.text;
+    }
+    
+    return "it exists";
+  }
+
+  checkIfItemExists(text){
+    const isExists = this.tasksList.some((item) => item.text === text);
+
+        // checks if task already exists
+        if (isExists) {
+            this.alert(`You are trying to add ${text} again`, "warning");
+        }
+        return isExists;
   }
 
   removeItem(text) {
+    console.log(text);
     this.tasksList = this.tasksList.filter((item) => item.text !== text);
   }
 
   getAllItems() {
     return this.tasksList;
+  }
+
+  alert(alert, type) {
+    if (!alert) {
+      this.alertBox.classList.add("show", "warning");
+      this.alertBoxText.innerText =
+        "please write some text before adding new ToDo";
+    } else {
+      this.alertBox.classList.add("show", type);
+      this.alertBoxText.innerHTML = alert;
+    }
   }
 }
