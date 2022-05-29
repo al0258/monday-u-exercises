@@ -1,24 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Listy</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initital-scale=1.0">
+    <title>Exercise 1 - Todo app</title>
     <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div class="app-container">
-      <div class="list-container">
-        <h1 class="app-name">Todo App</h1>
-        <div class="list-controls">
-          <input
-            type="text"
-            id="list-item-input"
-            placeholder="Add your new todo"
-          />
-          <button type="button" id="list-item-submit">+</button>
-        </div>
-        <ul id="list"></ul>
-      </div>
+    <script src="https://kit.fontawesome.com/5dfbee2ac5.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+</head>
+<body>
+    <div class="wrapper">
+    <header class="todo-header">Todo App</header>
+    
+    <div class="input-field">
+        <input type="text" placeholder="Add your new todo" class="new-to-do-input">
+        <button class="add-to-do-button"><i class="fas fa-plus"></i></button>
     </div>
-  </body>
-  <script src="main.js"></script>
+    <ul class="todo-list">
+
+    </ul>
+    <div class="todo-footer">
+        <span>You have <span class="pending-num"></span> pending tasks</span>
+        <button class="delete-all-button">Clear All</button>
+    </div>
+</div>
+
+<div class="alert">
+  <button class="alert-close-button">X</button>
+  <span class="alert-inner-text"></span>
+</div>
+
+
+</body>
+<script src="PokemonClient.js" type="module"></script>
+  <script src="ItemManager.js" type="module"></script>
+  <script src="render.js" type="module"></script>
+  <script src="main.js" type="module"></script>
 </html>
