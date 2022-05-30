@@ -26,6 +26,7 @@ export default class Render {
             for (
                 let index = this.todoListElement.childNodes.length - 1; index > 0; index--
             ) {
+                console.log(this.todoListElement.childNodes[index].childNodes[0].classList.contains('todo-item-checkbox-clicked'));
                 this.deleteItem(this.todoListElement.childNodes[index]);
             }
         });
@@ -77,8 +78,8 @@ export default class Render {
         // console.log(this.pendingTasksCounter);
     }
 
-    buildNewItem(text, time, done){
-        if (time === null){
+    buildNewItem(text, time, done) {
+        if (time === null) {
             time = new Date().toLocaleDateString();
         }
         const item = {
@@ -91,17 +92,6 @@ export default class Render {
     }
 
     addNewItem(item) {
-        // const time = new Date().toLocaleDateString();
-        // const item = {
-        //     text,
-        //     time,
-        //     done: false,
-        //     // toggleTaskDone() {
-        //     // Changes the state of which the item is either complete or not complete
-        //     //     this.done = !this.done;
-        //     // },
-        // };
-
         this.addItem(item).then((itemName) => {
             if (itemName !== "it exists") {
                 this.createNewToDoElement({
@@ -116,15 +106,14 @@ export default class Render {
         const listItemCheckbox = document.createElement("input");
         listItemCheckbox.setAttribute("type", "checkbox");
         listItemCheckbox.className = "todo-item-checkbox";
-        if (item.done){
+        if (item.done) {
             listItemCheckbox.classList.add("todo-item-checkbox-clicked");
         }
         listItemCheckbox.addEventListener("change", () => {
             this.toggleTaskDone(item);
-            if(item.done){
+            if (item.done) {
                 listItemCheckbox.classList.add("todo-item-checkbox-clicked");
-            }
-            else{
+            } else {
                 listItemCheckbox.classList.remove("todo-item-checkbox-clicked");
             }
         });
@@ -188,7 +177,8 @@ export default class Render {
 
         //Checks if the item was checked
         //If it is, it dosen't take it from the counter
-        if (!itemToDelete.querySelector('.todo-item-checkbox').checked) {
+        // !itemToDelete.querySelector('.todo-item-checkbox').checked &&
+        if (!itemToDelete.childNodes[0].classList.contains('todo-item-checkbox-clicked')) {
             this.pendingTasksCounter--;
             this.updateTasksNum();
         }

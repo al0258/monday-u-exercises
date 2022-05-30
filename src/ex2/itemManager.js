@@ -22,6 +22,7 @@ export default class ItemManager {
 
       if (pokemonName) {
         item.text = pokemonName;
+        console.log(pokemonName);
       }
     }
     if (!this.checkIfItemExists(item.text)){
