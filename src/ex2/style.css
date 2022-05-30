@@ -215,3 +215,8 @@ color: #BF4CF4;
 .alert-inner-text > span.done , .alert .alert-inner-text > span.done > span{
   color: #1ca148;
 }
+
+.pokemon-image-item{
+  object-fit: cover;
+  width: 70px;
+}

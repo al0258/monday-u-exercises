@@ -2,6 +2,7 @@ export default class Render {
     constructor(addItem, deleteItemHandler, getAllItems, taskFinished) {
         this.userInput = document.querySelector(".new-to-do-input");
         this.todoListElement = document.querySelector(".todo-list");
+        this.pokemonImageContainer = document.querySelector(".pokemon-image");
         this.alertBox = document.querySelector(".alert");
         this.alertBoxText = document.querySelector(".alert-inner-text");
         this.pendingTasksElement = document.querySelector(".pending-num");
@@ -55,7 +56,7 @@ export default class Render {
 
         if (!format.test(text)) {
             // this.addNewItem(text);
-            this.addNewItem(this.buildNewItem(text, null, false))
+            this.addNewItem(this.buildNewItem(text, null, false, ''))
         } else {
             this.alert(
                 "Please use letters and numbers only. Oh, and commas",
@@ -78,7 +79,7 @@ export default class Render {
         // console.log(this.pendingTasksCounter);
     }
 
-    buildNewItem(text, time, done) {
+    buildNewItem(text, time, done, pokemonImage) {
         if (time === null) {
             time = new Date().toLocaleDateString();
         }
@@ -86,6 +87,7 @@ export default class Render {
             text,
             time,
             done: done,
+            pokemonImage: pokemonImage,
         };
 
         return item;
@@ -140,9 +142,29 @@ export default class Render {
         return listItemText;
     }
 
+    addPokemonImage(item) {
+        const imageUrl = item.pokemonImage;
+        // console.log(imageUrl);
+        const pokemonImage = document.createElement("img");
+        pokemonImage.src = imageUrl;
+        pokemonImage.id = item.text;
+        pokemonImage.classList.add("pokemon-image-item");
+        this.pokemonImageContainer.append(pokemonImage);
+        // pokemonCatchText.classList.add(VISIBLE_CLASS);
+    }
+    removePokemonImage(text) {
+        const pokemonImage = document.getElementById(text);
+        if (pokemonImage) {
+            pokemonImage.parentElement.removeChild(pokemonImage);
+        }
+    }
+
     createNewToDoElement(item) {
         // console.log(item);
         //create a new list item
+        if (item.pokemonImage !== '') {
+            this.addPokemonImage(item);
+        }
         const listItem = document.createElement("li");
 
         // Create the comleted checkbox
@@ -182,6 +204,7 @@ export default class Render {
             this.pendingTasksCounter--;
             this.updateTasksNum();
         }
+        this.removePokemonImage(itemToDelete.innerText);
         this.deleteItemHandler(itemToDelete.innerText);
     }
 

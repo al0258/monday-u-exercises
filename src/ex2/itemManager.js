@@ -15,6 +15,7 @@ export default class ItemManager {
     if (isPokemonRegex.test(item.text)) {
       const pokemonId = parseInt(item.text);
       const pokemonName = await this.pokemonClient.fetchPokemonNameById(pokemonId);
+      item.pokemonImage=await this.pokemonClient.getPokemonImage(pokemonId);
       item.text = pokemonName;
     } 
     else {

@@ -19,7 +19,7 @@ class Main {
       
     (this.tasksList).forEach(element => {
         console.log(element);
-        this.render.addNewItem(this.render.buildNewItem(element.text, element.time, element.done));
+        this.render.addNewItem(this.render.buildNewItem(element.text, element.time, element.done, element.pokemonImage));
         // console.log(element.text);
     });
     this.render.init();

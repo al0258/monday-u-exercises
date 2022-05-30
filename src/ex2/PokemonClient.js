@@ -22,6 +22,16 @@ export default class PokemonClient {
     this.pokemonList = await this.fetchAllPokemons();
   }
 
+  async getPokemonImage(pokemonId){
+    try {
+      const pokemonData = await this.getPokemon(pokemonId);
+      return pokemonData.sprites.front_default;
+    } catch (error) {
+      return '';
+    }
+    
+  }
+
   async getPokemon(pokemonID) {
     try {
       if(pokemonID!== -1){
