@@ -22,26 +22,34 @@ export default class PokemonClient {
     this.pokemonList = await this.fetchAllPokemons();
   }
 
-  async getPokemonImage(pokemonId){
+  async getPokemonImage(pokemonId) {
     try {
       const pokemonData = await this.getPokemon(pokemonId);
       return pokemonData.sprites.front_default;
     } catch (error) {
       return '';
     }
-    
+  }
+
+  async getPokemonImageByName(name) {
+    try {
+      const pokemonId = this.pokemonList.findIndex(pokemon => pokemon.name === name);
+      const pokemonImage = await this.getPokemonImage(pokemonId);
+      return pokemonImage
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async getPokemon(pokemonID) {
     try {
-      if(pokemonID!== -1){
-      const response = await fetch(this.API_BASE + '/pokemon/' + pokemonID);
-      const data = await response.json();
-      return data;
+      if (pokemonID !== -1) {
+        const response = await fetch(this.API_BASE + '/pokemon/' + pokemonID);
+        const data = await response.json();
+        return data;
+      } else {
+        return null;
       }
-      else{
-      return null;
-    }
     } catch (error) {
       console.error(error);
     }

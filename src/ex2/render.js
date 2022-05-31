@@ -27,7 +27,7 @@ export default class Render {
             for (
                 let index = this.todoListElement.childNodes.length - 1; index > 0; index--
             ) {
-                console.log(this.todoListElement.childNodes[index].childNodes[0].classList.contains('todo-item-checkbox-clicked'));
+                //console.log(this.todoListElement.childNodes[index].childNodes[0].classList.contains('todo-item-checkbox-clicked'));
                 this.deleteItem(this.todoListElement.childNodes[index]);
             }
         });

@@ -15,15 +15,15 @@ export default class ItemManager {
     if (isPokemonRegex.test(item.text)) {
       const pokemonId = parseInt(item.text);
       const pokemonName = await this.pokemonClient.fetchPokemonNameById(pokemonId);
-      item.pokemonImage=await this.pokemonClient.getPokemonImage(pokemonId);
+      item.pokemonImage = await this.pokemonClient.getPokemonImage(pokemonId);
       item.text = pokemonName;
     } 
     else {
       const pokemonName = await this.pokemonClient.fetchPokemonByName(item.text);
 
       if (pokemonName) {
+        item.pokemonImage = await this.pokemonClient.getPokemonImageByName(item.text);
         item.text = pokemonName;
-        console.log(pokemonName);
       }
     }
     if (!this.checkIfItemExists(item.text)){
