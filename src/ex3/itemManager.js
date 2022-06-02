@@ -54,17 +54,8 @@ export default class ItemManager {
   }
 
   addNewItem(item) {
-    // console.log(item);
-    // const data = fs.readFileSync('tasks.json');
-    // if (Object.entries(data).length !== 0){
-    //   console.log('hi');
-    //   this.tasksList = JSON.parse(data);
-    // }
-    // console.log(this.tasksList);
     this.getItemsFromJson();
     this.tasksList.push(item);
-    console.log("New todo added successfully");
-    // console.log(this.tasksList);
     this.writeToJson();
   }
 
@@ -114,9 +105,9 @@ export default class ItemManager {
   }
 
   removeItem(index) {
+    this.getItemsFromJson();
     this.tasksList.splice(index,1);
     this.writeToJson();
-    console.log('Item Removed');
   }
 
   sortItems(){

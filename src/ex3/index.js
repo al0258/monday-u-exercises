@@ -15,7 +15,7 @@ class Main {
         // console.log(this.tasksList);
     }
 
-    printTasks(){
+    printTasks() {
         this.getItemsFromJson();
         this.tasksList.forEach(element => {
             console.log(element.text);
@@ -23,12 +23,23 @@ class Main {
     }
 
     deleteTodoTask(index) {
-        this.updateTodos(this.itemManager.deleteItem(index));
+        try {
+            this.itemManager.removeItem(index);
+            console.log("Todo deleted successfully");
+        } catch (error) {
+            console.log("error");
+        }
+
     }
 
     addTodo(text) {
-        this.itemManager.addNewTask(text);
-        // this.getItemsFromJson();
+        try {
+            this.itemManager.addNewTask(text);
+            console.log("New todo added successfully");
+        } catch (error) {
+            console.log(error);
+        }
+
     }
 
     onSortListButtonClicked() {
@@ -77,10 +88,18 @@ program
     });
 
 program
-.command("get")
-.description("Prints all the tasks")
-.action(() => {
-    main.printTasks();
-});
+    .command("get")
+    .description("Prints all the tasks")
+    .action(() => {
+        main.printTasks();
+    });
+
+program
+    .command("delete")
+    .description("Delete a task from the todo list")
+    .argument("<number>", "index in array")
+    .action((index) => {
+        main.deleteTodoTask(index);
+    });
 
 program.parse();
