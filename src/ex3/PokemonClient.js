@@ -26,7 +26,7 @@ export default class PokemonClient {
   }
 
   async displayPokemon(imageUrl){
-    console.log(await asciify(imageUrl, { fit: "box", width: 20, height: 20, alphabet: "blocks" }));
+    console.log(await asciify(imageUrl, { fit: "box", width: 20, height: 20 }));
   }
 
   async getPokemonImage(pokemonId) {
