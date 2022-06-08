@@ -2,6 +2,11 @@ import ItemManager from "./ItemManager.js";
 import PokemonClient from "./PokemonClient.js";
 import * as fs from 'fs';
 
+import chalk from "chalk";
+import {
+    Command
+} from "commander";
+
 class Main {
     constructor(itemManager, pokemonClient) {
         this.itemManager = itemManager;
@@ -17,19 +22,34 @@ class Main {
                 this.tasksList = JSON.parse(data);
             }
         } catch (error) {
-            console.log('Cannot find file');
+            console.log(chalk.bgRed.white('Cannot find file'));
         }
 
     }
 
-    printTasks() {
+    checkIfTasksExist() {
         this.getItemsFromJson();
         if (this.tasksList.length === 0) {
             console.log("There are no tasks in your list");
+            return false;
         } else {
+            return true;
+        }
+    }
+
+    printTasks() {
+        if (this.checkIfTasksExist()) {
             this.tasksList.forEach((element, index) => {
                 console.log(`Task ${index}: ${element.text}`);
+            });
+        }
+    }
+
+    printPokemonsCaught() {
+        if (this.checkIfTasksExist()) {
+            this.tasksList.forEach((element, index) => {
                 if (element.pokemonImage !== '') {
+                    console.log(`Task ${index}: ${element.text}`);
                     pokemonClient.displayPokemon(element.pokemonImage);
                 }
             });
@@ -39,7 +59,7 @@ class Main {
     deleteTodoTask(index) {
         try {
             this.itemManager.removeItem(index);
-            console.log("Todo deleted successfully");
+            console.log(chalk.bgYellow.black(`Task ${index} was deleted successfully`));
         } catch (error) {
             console.log("error");
         }
@@ -72,10 +92,6 @@ const main = new Main(itemManager, pokemonClient);
 // main.init();
 
 
-import chalk from "chalk";
-import {
-    Command
-} from "commander";
 const program = new Command();
 
 program
@@ -93,9 +109,16 @@ program
 
 program
     .command("get")
-    .description("Prints all the tasks")
+    .description("Prints all the tasks without pokemon images")
     .action(() => {
         main.printTasks();
+    });
+
+program
+    .command("show")
+    .description("Shows all the pokemons caught")
+    .action(() => {
+        main.printPokemonsCaught();
     });
 
 program

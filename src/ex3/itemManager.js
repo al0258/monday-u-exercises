@@ -1,5 +1,6 @@
 import PokemonClient from "./PokemonClient.js";
 import * as fs from 'fs';
+import chalk from "chalk";
 
 export default class ItemManager {
   constructor() {
@@ -58,7 +59,7 @@ export default class ItemManager {
     this.getItemsFromJson();
     this.tasksList.push(item);
     this.writeToJson();
-    console.log("New todo added successfully");
+    console.log(chalk.bgBlueBright.whiteBright(`${item.text} was added to the task list`));
   }
 
   getItemsFromJson() {
@@ -85,6 +86,7 @@ export default class ItemManager {
       const pokemonId = parseInt(text);
       const pokemonName = await this.pokemonClient.fetchPokemonNameById(pokemonId);
       const pokemonImage = await this.pokemonClient.getPokemonImage(pokemonId);
+      console.log(chalk.bgWhiteBright.red('A wild pokemon appeard...'));
       const item = this.buildNewItem(pokemonName, pokemonImage);
       return item
     } else {

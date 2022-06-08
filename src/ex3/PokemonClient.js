@@ -53,7 +53,6 @@ export default class PokemonClient {
       if (pokemonID !== -1) {
         const response = await fetch(this.API_BASE + '/pokemon/' + pokemonID);
         const data = await response.json();
-        console.log(data);
         return data;
       } else {
         return null;
