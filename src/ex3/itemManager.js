@@ -5,6 +5,7 @@ export default class ItemManager {
   constructor() {
     this.tasksList = [];
     this.pokemonClient = new PokemonClient();
+    this.jsonFile = 'tasks.json';
     //this.getFromLocalStorage();
   }
 
@@ -27,13 +28,13 @@ export default class ItemManager {
 
   async checkUserInput(text) {
     const format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
-
     if (!format.test(text)) {
       // this.addNewItem(text);
-      if (this.checkIfItemExists(text)) {
+      const item = await this.createItem(text);
+      if (this.checkIfItemExists(item.text)) {
         console.log('You are trying to add the same task again');
       } else {
-        const item = await this.createItem(text);
+        // const item = await this.createItem(text);
         // console.log(item);
         this.addNewItem(item);
       }
@@ -57,13 +58,16 @@ export default class ItemManager {
     this.getItemsFromJson();
     this.tasksList.push(item);
     this.writeToJson();
+    console.log("New todo added successfully");
   }
 
   getItemsFromJson() {
-    const data = fs.readFileSync('tasks.json');
-    this.tasksList = JSON.parse(data);
+    if (fs.existsSync(this.jsonFile)) {
+      const data = fs.readFileSync(this.jsonFile);
+      this.tasksList = JSON.parse(data);
+    }
     // console.log(this.tasksList);
-}
+  }
 
   writeToJson() {
     const jsonContent = JSON.stringify(this.tasksList);
@@ -87,12 +91,12 @@ export default class ItemManager {
       const pokemonName = await this.pokemonClient.fetchPokemonByName(text);
 
       if (pokemonName) {
-        pokemonImage = await this.pokemonClient.getPokemonImageByName(text);
+        const pokemonImage = await this.pokemonClient.getPokemonImageByName(text);
         const item = this.buildNewItem(pokemonName, pokemonImage);
         return item
       }
     }
-    const item = this.buildNewItem(text,'');
+    const item = this.buildNewItem(text, '');
     return item
   }
 
@@ -106,12 +110,24 @@ export default class ItemManager {
 
   removeItem(index) {
     this.getItemsFromJson();
-    this.tasksList.splice(index,1);
+    this.tasksList.splice(index, 1);
     this.writeToJson();
   }
 
-  sortItems(){
-    this.tasksList.sort((a,b) => a.text - b.text);
+  sortItems() {
+    this.getItemsFromJson();
+    this.tasksList.sort((a, b) => {
+      let taskOne = a.text.toLowerCase(),
+        taskTwo = b.text.toLowerCase();
+
+      if (taskOne < taskTwo) {
+        return -1;
+      }
+      if (taskOne > taskTwo) {
+        return 1;
+      }
+      return 0;
+    });
     this.writeToJson();
   }
 

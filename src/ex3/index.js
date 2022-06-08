@@ -7,19 +7,33 @@ class Main {
         this.itemManager = itemManager;
         this.pokemonClient = pokemonClient;
         this.tasksList = []
+        this.jsonFile = 'tasks.json';
     }
 
     getItemsFromJson() {
-        const data = fs.readFileSync('tasks.json');
-        this.tasksList = JSON.parse(data);
-        // console.log(this.tasksList);
+        try {
+            if (fs.existsSync(this.jsonFile)) {
+                const data = fs.readFileSync(this.jsonFile);
+                this.tasksList = JSON.parse(data);
+            }
+        } catch (error) {
+            console.log('Cannot find file');
+        }
+
     }
 
     printTasks() {
         this.getItemsFromJson();
-        this.tasksList.forEach(element => {
-            console.log(element.text);
-        });
+        if (this.tasksList.length === 0) {
+            console.log("There are no tasks in your list");
+        } else {
+            this.tasksList.forEach((element, index) => {
+                console.log(`Task ${index}: ${element.text}`);
+                if (element.pokemonImage !== '') {
+                    pokemonClient.displayPokemon(element.pokemonImage);
+                }
+            });
+        }
     }
 
     deleteTodoTask(index) {
@@ -35,15 +49,19 @@ class Main {
     addTodo(text) {
         try {
             this.itemManager.addNewTask(text);
-            console.log("New todo added successfully");
         } catch (error) {
             console.log(error);
         }
 
     }
 
-    onSortListButtonClicked() {
-        this.updateTodos(this.itemManager.sortItems());
+    sortTodoList() {
+        try {
+            this.itemManager.sortItems();
+            console.log("The list was sorted successfully");
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 
@@ -61,23 +79,9 @@ import {
 const program = new Command();
 
 program
-    .name("cli-calc")
-    .description("The best CLI calculator")
+    .name("Tasker")
+    .description("This is the best task managment tool you will ever find. I can store Pokemons too :)")
     .version("1.0.0");
-
-// program
-//   .command("add")
-//   .description("Add two numbers")
-//   .argument("<string>", "first operand")
-// //   .option("-c, --color <string>", "Result color", "white")
-// //   .action((firstNumber, secondNumber, options) => {
-//     .action((todo) => {
-//     console.log(
-//       chalk[options.color](
-//         `Result: ${Number(firstNumber) + Number(secondNumber)}`
-//       )
-//     );
-//   });
 
 program
     .command("add")
@@ -100,6 +104,13 @@ program
     .argument("<number>", "index in array")
     .action((index) => {
         main.deleteTodoTask(index);
+    });
+
+program
+    .command("sort")
+    .description("Sort the todo list")
+    .action(() => {
+        main.sortTodoList();
     });
 
 program.parse();
