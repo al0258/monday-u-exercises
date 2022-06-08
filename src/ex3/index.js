@@ -30,7 +30,7 @@ class Main {
     checkIfTasksExist() {
         this.getItemsFromJson();
         if (this.tasksList.length === 0) {
-            console.log("There are no tasks in your list");
+            console.log(chalk.bgRed.white("There are no tasks in your list"));
             return false;
         } else {
             return true;
@@ -39,6 +39,7 @@ class Main {
 
     printTasks() {
         if (this.checkIfTasksExist()) {
+            console.log(chalk.bgCyan.whiteBright("Getting all your todos"));
             this.tasksList.forEach((element, index) => {
                 console.log(`Task ${index}: ${element.text}`);
             });
