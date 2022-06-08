@@ -1,18 +1,23 @@
 {
-  "name": "amits-to-do-list",
+  "name": "amits-pokemon-to-do-list",
   "version": "1.0.0",
-  "description": "Time for task #3!<br>",
+  "description": "A command line tool that lets you manage your tasks and catch pokemons",
   "main": "index.js",
+  "bin": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js"
   },
   "author": "Amit Lago",
   "license": "ISC",
   "dependencies": {
     "asciify-image": "^0.1.8",
     "chalk": "^5.0.1",
+    "chalk-animation": "^2.0.2",
     "commander": "^9.3.0",
+    "inquirer": "^8.2.4",
+    "nanospinner": "^1.1.0",
     "node-fetch": "^3.2.4"
   }
 }
