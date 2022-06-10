@@ -98,6 +98,12 @@ const itemManager = new ItemManager();
 const pokemonClient = new PokemonClient();
 const main = new Main(itemManager, pokemonClient);
 
+
+
+// This is the inquirer start
+// Comment this part and uncomment the next part to see the command tool
+
+
 const sleep = (ms = 2000) => new Promise((r) => setTimeout(r, ms));
 
 async function welcome() {
@@ -186,7 +192,7 @@ async function handleAnswer(option) {
             startCommands();
             break;
 
-            case 'Exit':
+        case 'Exit':
             spinner.success();
             process.exit(0);
             break;
@@ -204,7 +210,9 @@ await startCommands();
 
 
 
-// main.init();
+
+
+// This is the command part
 
 
 // const program = new Command();
