@@ -94,6 +94,7 @@ export default class ItemManager {
 
       if (pokemonName) {
         const pokemonImage = await this.pokemonClient.getPokemonImageByName(text);
+        console.log(chalk.bgWhiteBright.red('A wild pokemon appeard...'));
         const item = this.buildNewItem(pokemonName, pokemonImage);
         return item
       }
