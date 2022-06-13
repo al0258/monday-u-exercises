@@ -7,7 +7,7 @@ export default class PokemonClient {
   }
 
   async displayPokemon(imageUrl){
-    console.log(await asciify(imageUrl, { fit: "box", width: 20, height: 20 }));
+    await console.log(await asciify(imageUrl, { fit: "box", width: 20, height: 20 }));
   }
 
   async getPokemonImage(pokemonId) {
@@ -31,7 +31,7 @@ export default class PokemonClient {
 
   async getPokemon(pokemonID) {
     try {
-      if (pokemonID !== -1) {
+      if (pokemonID) {
         const response = await fetch(this.API_BASE + '/pokemon/' + pokemonID);
         const data = await response.json();
         return data;
