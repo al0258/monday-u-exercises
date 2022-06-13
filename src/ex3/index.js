@@ -2,6 +2,7 @@
 
 import ItemManager from "./ItemManager.js";
 import PokemonClient from "./PokemonClient.js";
+import Main from "./Main.js"
 import * as fs from 'fs';
 
 
@@ -15,84 +16,14 @@ import {
     createSpinner
 } from "nanospinner";
 
-class Main {
-    constructor(itemManager, pokemonClient) {
-        this.itemManager = itemManager;
-        this.pokemonClient = pokemonClient;
-        this.tasksList = []
-        this.jsonFile = 'tasks.json';
-    }
-
-    getItemsFromJson() {
-        try {
-            if (fs.existsSync(this.jsonFile)) {
-                const data = fs.readFileSync(this.jsonFile);
-                this.tasksList = JSON.parse(data);
-            }
-        } catch (error) {
-            console.log(chalk.bgRed.white('Cannot find file'));
-        }
-
-    }
-
-    checkIfTasksExist() {
-        this.getItemsFromJson();
-        if (this.tasksList.length === 0) {
-            console.log(chalk.bgRed.white("There are no tasks in your list"));
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    printTasks() {
-        if (this.checkIfTasksExist()) {
-            console.log(chalk.bgCyan.whiteBright("Getting all your todos"));
-            this.tasksList.forEach((element, index) => {
-                console.log(`Task ${index}: ${element.text}`);
-            });
-        }
-    }
-
-    printPokemonsCaught() {
-        if (this.checkIfTasksExist()) {
-            this.tasksList.forEach((element, index) => {
-                if (element.pokemonImage !== '') {
-                    console.log(`Task ${index}: ${element.text}`);
-                    pokemonClient.displayPokemon(element.pokemonImage);
-                }
-            });
-        }
-    }
-
-    deleteTodoTask(index) {
-        try {
-            this.itemManager.removeItem(index);
-            console.log(chalk.bgYellow.black(`Task ${index} was deleted successfully`));
-        } catch (error) {
-            console.log("error");
-        }
-
-    }
-
-    addTodo(text) {
-        try {
-            this.itemManager.addNewTask(text);
-        } catch (error) {
-            console.log(error);
-        }
-
-    }
-
-    sortTodoList() {
-        try {
-            this.itemManager.sortItems();
-            console.log("The list was sorted successfully");
-        } catch (error) {
-            console.log(error);
-        }
-    }
-}
+const CONSOLE_ACTIONS = {
+    ADD_TASK: 'Add a task',
+    GET_TASKS: 'Get all tasks',
+    SHOW_POKEMONS: 'Show pokemons',
+    DELETE_TASK: 'Delete task',
+    SORT_LIST: 'Sort the task list',
+    EXIT: 'Exit'
+  }
 
 const itemManager = new ItemManager();
 const pokemonClient = new PokemonClient();
@@ -104,7 +35,7 @@ const main = new Main(itemManager, pokemonClient);
 // Comment this part and uncomment the next part to see the command tool
 
 
-const sleep = (ms = 2000) => new Promise((r) => setTimeout(r, ms));
+const sleep = (ms = 1000) => new Promise((r) => setTimeout(r, ms));
 
 async function welcome() {
     const rainbowTitle = chalkanimation.rainbow(
@@ -127,12 +58,12 @@ async function startCommands() {
         type: 'list',
         message: 'Pick an option',
         choices: [
-            'Add a task',
-            'Get all tasks',
-            'Show pokemons',
-            'Delete task',
-            'Sort the task list',
-            'Exit'
+            CONSOLE_ACTIONS.ADD_TASK,
+            CONSOLE_ACTIONS.GET_TASKS,
+            CONSOLE_ACTIONS.SHOW_POKEMONS,
+            CONSOLE_ACTIONS.DELETE_TASK,
+            CONSOLE_ACTIONS.SORT_LIST,
+            CONSOLE_ACTIONS.EXIT
         ]
     });
     return handleAnswer(answer.commands);
@@ -144,7 +75,7 @@ async function handleAnswer(option) {
     await sleep();
 
     switch (option) {
-        case 'Add a task':
+        case CONSOLE_ACTIONS.ADD_TASK:
             spinner.success();
             const taskToAdd = await inquirer.prompt({
                 name: 'add',
@@ -152,26 +83,25 @@ async function handleAnswer(option) {
                 message: 'Write the new task to add to the list'
             });
 
-            main.addTodo(taskToAdd.add);
-            await sleep();
+            await main.addTodo(taskToAdd.add);
 
             startCommands();
             break;
-        case 'Get all tasks':
+        case CONSOLE_ACTIONS.GET_TASKS:
             spinner.success();
             main.printTasks();
+            console.log();
 
-            await sleep();
             startCommands();
             break;
-        case 'Show pokemons':
+        case CONSOLE_ACTIONS.SHOW_POKEMONS:
             spinner.success();
             main.printPokemonsCaught();
 
             await sleep();
             startCommands();
             break;
-        case 'Delete task':
+        case CONSOLE_ACTIONS.DELETE_TASK:
             spinner.success();
             const itemToDelete = await inquirer.prompt({
                 name: 'delete',
@@ -181,18 +111,16 @@ async function handleAnswer(option) {
 
             main.deleteTodoTask(itemToDelete.delete);
 
-            await sleep();
             startCommands();
             break;
-        case 'Sort the task list':
+        case CONSOLE_ACTIONS.SORT_LIST:
             spinner.success();
             main.sortTodoList();
 
-            await sleep();
             startCommands();
             break;
 
-        case 'Exit':
+        case CONSOLE_ACTIONS.EXIT:
             spinner.success();
             process.exit(0);
             break;

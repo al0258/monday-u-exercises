@@ -10,20 +10,20 @@ export default class ItemManager {
     //this.getFromLocalStorage();
   }
 
-  addNewTask(text) {
+  async addNewTask(text) {
     if (text) {
-      this.checkNewTaskInput(text);
+      await this.checkNewTaskInput(text);
     } else {
       return null;
     }
   }
 
-  checkNewTaskInput(text) {
+  async checkNewTaskInput(text) {
     const textList = text.split(",");
     if (textList.length > 1) {
-      textList.forEach((text) => this.checkUserInput(text.trim()));
+      textList.forEach(async (text) => await this.checkUserInput(text.trim()));
     } else {
-      this.checkUserInput(text.trim());
+      await this.checkUserInput(text.trim());
     }
   }
 
@@ -94,6 +94,7 @@ export default class ItemManager {
 
       if (pokemonName) {
         const pokemonImage = await this.pokemonClient.getPokemonImageByName(text);
+        console.log(chalk.bgWhiteBright.red('A wild pokemon appeard...'));
         const item = this.buildNewItem(pokemonName, pokemonImage);
         return item
       }
