@@ -34,7 +34,7 @@ export default class ItemManager {
     }
 
     getAllItems(sortOrder) {
-        return this._sortData(sortOrder);
+        return this.sortTasks(sortOrder);
     }
 
     getItemsLength() {
@@ -49,34 +49,32 @@ export default class ItemManager {
     }
 
     async _handleItem(item) {
-        const res = { item };
-        console.log("item: "+item);
-        const pokemonExist = this._isPokemonExist(item);
+        const response = { item };
+        const pokemonExist = this.checkIfPokemonExists(item);
         if (pokemonExist) {
-            res.type = 'pokemonExists';
-            res.pokemon = pokemonExist.pokemon;
-            return res;
+            response.type = 'pokemonExists';
+            response.pokemon = pokemonExist.pokemon;
+            return response;
         }
         const pokemon = await this.pokemonClient.getPokemon(item.toLowerCase());
         if (pokemon.success) {
-            res.type = 'pokemon';
-            res.pokemon = {name:pokemon.body.name, id:pokemon.body.id, image:pokemon.body.sprites.front_default, types:pokemon.body.types}
+            response.type = 'pokemon';
+            response.pokemon = {name:pokemon.body.name, id:pokemon.body.id, image:pokemon.body.sprites.front_default, types:pokemon.body.types}
             
         }
         else if (pokemon.error && !isNaN(item) && !item.toString().includes('.')) {
-            res.type = 'pokemonNotFound';
+            response.type = 'pokemonNotFound';
         } else {
-            res.type = 'text';
+            response.type = 'text';
         }
-        res.checked = false;
-        console.log(res);
-        this._handleTodoMessage(res);
-        const newItem = this._insertItem(res);
+        response.checked = false;
+        this._handleTodoMessage(response);
+        const newItem = this.insertItem(response);
 
         return newItem;
     }
 
-    _insertItem({ item, pokemon, type, message, checked }) {
+    insertItem({ item, pokemon, type, message, checked }) {
         return this.fileSystemManager.addItemToFile({
             id: generateUniqueID(),
             type,
@@ -109,18 +107,18 @@ export default class ItemManager {
         }
     }
 
-    _isPokemonExist(pokemon) {
-        const itemsListData = this.fileSystemManager.getAllItems();
-        return itemsListData?.find(data => (data.pokemon?.id == pokemon || data.pokemon?.name == pokemon.toLowerCase()));
+    checkIfPokemonExists(pokemon) {
+        const taskListData = this.fileSystemManager.getAllItems();
+        return taskListData?.find(data => (data.pokemon?.id == pokemon || data.pokemon?.name == pokemon.toLowerCase()));
     }
 
-    _sortData(sortOrder) {
-        const itemsListData = this.fileSystemManager.getAllItems();
-        itemsListData?.sort((a, b) => a.message > b.message ? 1 : a.message < b.message ? -1 : 0);
+    sortTasks(sortOrder) {
+        const taskListData = this.fileSystemManager.getAllItems();
+        taskListData?.sort((a, b) => a.message > b.message ? 1 : a.message < b.message ? -1 : 0);
         if (sortOrder === 'Z-A') {
-            itemsListData?.reverse();
+            taskListData?.reverse();
         }
-        return itemsListData;
+        return taskListData;
     }
 
 }
