@@ -1,5 +1,5 @@
 import express from 'express'
-import PokemonClient from "../clients/pokemon-client.js";
+import PokemonClient from "../clients/pokemon_client.js";
 
 const router = express.Router();
 const pokemonClient = new PokemonClient;

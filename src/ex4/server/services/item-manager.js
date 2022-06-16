@@ -1,7 +1,7 @@
 // The ItemManager should go here. Remember that you have to export it.
 
 import FileSystemManager from "./file-system-manager.js";
-import PokemonClient from "../clients/pokemon-client.js";
+import PokemonClient from "../clients/pokemon_client.js";
 import { generateUniqueID, capitalizeText } from "../../utils/string-utils.js";
 
 const TODO_MASSAGES = {
