@@ -12,7 +12,6 @@ class Main {
         this.spinnerElement = document.querySelector('#spinner');
         this.itemClient = new ItemClient;
         this.localStorageManager = new LocalStorageManager;
-
         this.todoListData = [];
     }
 
@@ -174,7 +173,6 @@ class Main {
     }
 
     _handleEmptyTodoListContent() {
-        // <span class="icon"><i class="fas fa-clipboard"></i></span> </br>
         const todoListContent = `<p class="empty-todo-list">
         Oh, would you look at that... Your Todo list is empty </br>
         <span class="icon"><img src="https://pbs.twimg.com/media/EguuUS1XsAAqfhl?format=jpg&name=360x360"></span> </br>
