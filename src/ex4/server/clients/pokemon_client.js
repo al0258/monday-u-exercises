@@ -4,12 +4,18 @@ import axios from "axios";
 export default class PokemonClient {
     constructor() {
         this._API_BASE = 'https://pokeapi.co/api/v2/pokemon';
+        this._CACHE_TIMEOUT_MS = 1000 * 60;
+        this._cache = new Map;
     }
 
     async getPokemon(pokemon) {
         try {
+            if (this._cache.has(pokemon)) {
+                return this._cache.get(pokemon);
+            }
             const response = await axios.get(`${this._API_BASE}/${pokemon}`);
             const res = this._handleResponse(null, response, pokemon);
+            this._saveToCache(pokemon, res);
             return res;
         } catch (error) {
             console.error(error);
@@ -18,7 +24,9 @@ export default class PokemonClient {
     }
 
     _handleResponse(error, response, pokemon) {
-        const res = { success: true };
+        const res = {
+            success: true
+        };
         if (error) {
             res.error = error.toString();
             res.success = false;
@@ -32,5 +40,10 @@ export default class PokemonClient {
             res.body = response.data;
         }
         return res;
+    }
+
+    _saveToCache(pokemon, res) {
+        this._cache.set(pokemon, res);
+        setTimeout(() => this._cache.delete(pokemon), this._CACHE_TIMEOUT_MS);
     }
 }
