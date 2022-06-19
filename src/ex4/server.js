@@ -2,8 +2,8 @@
 
 import dotenv from 'dotenv'
 import express from 'express'
-// import errorHandler from './server/middleware/error-handling.js'
-// import logger from './server/middleware/logger.js'
+import errorHandler from './server/middleware/error_handler.js'
+import logger from './server/middleware/logger.js'
 import todosRouter from './server/routes/api.js'
 import pokemonRouter from './server/routes/pokemon.js'
 
@@ -14,8 +14,8 @@ const APP_PORT = process.env.PORT ? parseInt(process.env.PORT) : 8000;
 const app = express();
 
 app.use([
-    // errorHandler,
-    // logger,
+    errorHandler,
+    logger,
     express.json()
 ]);
 

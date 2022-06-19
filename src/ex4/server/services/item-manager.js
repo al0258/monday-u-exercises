@@ -16,8 +16,8 @@ export default class ItemManager {
         this.fileSystemManager = new FileSystemManager;
     }
 
-    async addItem(value) {
-        const items = value
+    async addItem(userInput) {
+        const items = userInput
             .split(',')
             .map(s => s.trim())
             .filter(Boolean);
