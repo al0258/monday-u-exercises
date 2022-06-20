@@ -11,8 +11,10 @@ export default class PokemonClient {
     async getPokemon(pokemon) {
         try {
             if (this._cache.has(pokemon)) {
+                // console.log(`Getting from the cache`);
                 return this._cache.get(pokemon);
             }
+            // console.log("Getting from the API");
             const response = await axios.get(`${this._API_BASE}/${pokemon}`);
             const res = this._handleResponse(null, response, pokemon);
             this._saveToCache(pokemon, res);

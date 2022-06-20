@@ -63,13 +63,13 @@ class FileSystemManager {
         if (!current.item) {
             return;
         }
-        // console.log('jj'+item);
+        
         if (item.type = 'text') {
             current.item.item = current.item.message = item.message;
         }
         current.item.checked = item.checked;
 
-        // current.item = item;
+        
         this.saveToTodoFile(current.items);
         return current.item;
     }
