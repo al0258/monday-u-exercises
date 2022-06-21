@@ -9,9 +9,10 @@ body {
   width: 100%;
   height: 100vh;
   padding: 10px;
-  background: rgb(238,174,202);
-  background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
+  background: rgb(238, 174, 202);
+  background: radial-gradient(circle, rgba(238, 174, 202, 1) 0%, rgba(148, 187, 233, 1) 100%);
 }
+
 .spinner-wrapper {
   position: relative;
   left: 30%;
@@ -20,11 +21,11 @@ body {
 
 .spinner {
   height: 100%;
-    width: 100%;
-    position: fixed;
-    z-index: 999999;
-    background: black;
-    opacity: 0.6;
+  width: 100%;
+  position: fixed;
+  z-index: 999999;
+  background: black;
+  opacity: 0.6;
 }
 
 .container {
@@ -258,7 +259,7 @@ body {
   bottom: 2px;
 }
 
-.todo-item-checkbox{
+.todo-item-checkbox {
   -webkit-appearance: none;
   appearance: none;
   align-self: center;
@@ -275,7 +276,7 @@ body {
   background-color: #eeeee4;
 }
 
-.todo-item-checkbox-clicked::after{
+.todo-item-checkbox-clicked::after {
   color: #1ca148;
   content: "\2713";
   position: absolute;
@@ -292,21 +293,17 @@ body {
   color: #d180f7;
   position: absolute;
   font-size: xx-large;
-  /* animation: 4s linear 0s infinite alternate slidein; */
 }
 
 
-.alert{
-  width: 640px; /* Can be in percentage also. */
+.alert {
+  width: 640px;
   height: auto;
   margin: 0 auto;
   padding: 10px;
   position: relative;
-
   display: none;
-  /* position: absolute; */
   text-align: center;
-  /* width: 60%; */
   max-width: 300px;
   max-height: 300px;
   background-color: white;
@@ -318,28 +315,26 @@ body {
   background-color: #eeeee4;
 }
 
-.alert.show{
+.alert.show {
   display: flex;
 }
 
-.alert.warning{
+.alert.warning {
   color: #E72901;
   font-weight: 700;
-  /* text-align: center;
-  font-size: 1.5rem; */
   animation: fadeIn;
   animation-duration: 0.5s;
   height: 60%;
 }
 
-.alert.info{
+.alert.info {
   color: #BF4CF4;
   animation: fadeIn;
   animation-duration: 0.5s;
   height: 40%;
 }
 
-.alert-close-button{
+.alert-close-button {
   align-self: flex-end;
   margin-left: 4%;
   width: 25px;
@@ -349,7 +344,7 @@ body {
   color: #eeeee4;
 }
 
-.alert-inner-text{
+.alert-inner-text {
   display: flex;
   flex-direction: column;
   justify-self: center;
@@ -358,105 +353,12 @@ body {
   margin-bottom: 45px;
 }
 
-.alert-inner-text > span > span{
-font-weight: 700;
-color: #BF4CF4;
+.alert-inner-text>span>span {
+  font-weight: 700;
+  color: #BF4CF4;
 }
 
-.alert-inner-text > span.done , .alert .alert-inner-text > span.done > span{
+.alert-inner-text>span.done,
+.alert .alert-inner-text>span.done>span {
   color: #1ca148;
 }
-
-
-/* animation */
-/* @-webkit-keyframes slidein {
-  0% {
-    transform: translateX(0px);
-  }
-
-  10% {
-    transform: translateX(40px) translateY(15px);
-  }
-
-  20% {
-    transform: translateX(80px) translateY(0px);
-  }
-
-  30% {
-    transform: translateX(120px) translateY(15px);
-  }
-
-  40% {
-    transform: translateX(160px) translateY(0px);
-  }
-
-  50% {
-    transform: translateX(200px) translateY(15px);
-  }
-
-  60% {
-    transform: translateX(240px) translateY(0px);
-  }
-
-  70% {
-    transform: translateX(280px) translateY(15px);
-  }
-
-  80% {
-    transform: translateX(320px) translateY(0px);
-  }
-
-  90% {
-    transform: translateX(360px) translateY(15px);
-  }
-
-  100% {
-    transform: translateX(400px) translateY(0px);
-  }
-}
-
-@keyframes slidein {
-  0% {
-    transform: translateX(0px);
-  }
-
-  10% {
-    transform: translateX(40px) translateY(15px);
-  }
-
-  20% {
-    transform: translateX(80px) translateY(0px);
-  }
-
-  30% {
-    transform: translateX(120px) translateY(15px);
-  }
-
-  40% {
-    transform: translateX(160px) translateY(0px);
-  }
-
-  50% {
-    transform: translateX(200px) translateY(15px);
-  }
-
-  60% {
-    transform: translateX(240px) translateY(0px);
-  }
-
-  70% {
-    transform: translateX(280px) translateY(15px);
-  }
-
-  80% {
-    transform: translateX(320px) translateY(0px);
-  }
-
-  90% {
-    transform: translateX(360px) translateY(15px);
-  }
-
-  100% {
-    transform: translateX(400px) translateY(0px);
-  }
-} */
