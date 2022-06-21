@@ -10,9 +10,16 @@ class Main {
         this.todoList = document.querySelector('#todo-list');
         this.deleteAllBtn = document.querySelector('#footer-btn');
         this.spinnerElement = document.querySelector('#spinner');
+        this.alertBox = document.querySelector(".alert");
+        this.alertBoxText = document.querySelector(".alert-inner-text");
+        this.alertBoxCloseBtn = document.querySelector(".alert-close-button");
         this.itemClient = new ItemClient;
         this.localStorageManager = new LocalStorageManager;
         this.todoListData = [];
+        this.ALERT_TYPE = {
+            WARNING: 'warning',
+            INFO: 'info'
+          }
     }
 
     init() {
@@ -23,6 +30,7 @@ class Main {
         this.editTodoApproveBtn.addEventListener('click', (event) => this._onEditTodoApproveButton(event));
         this.editTodoCancelBtn.addEventListener('click', (event) => this._onEditTodoCancelButton(event));
         this.deleteAllBtn.addEventListener('click', (event) => this._onDeleteAllButtonClicked(event));
+        this.alertBoxCloseBtn.addEventListener("click", (event) => {this.closeAlertBox(event)});
         this._setSortBy();
     }
 
@@ -55,7 +63,7 @@ class Main {
         if (event.key === 'Enter' && this.addBtn.classList.contains('active')) {
             this._onAddButtonClicked();
         } else if (event.key === 'Enter' && this.todoInput.value.trim().length === 0) {
-            alert('Please add a new todo');
+            this.alert('Please add a new todo', this.ALERT_TYPE.WARNING);
         }
     }
 
@@ -104,14 +112,14 @@ class Main {
         if (!duplicatesPokemons.length) {
             return;
         }
-        let content = 'The following pokemons are already exist: \n';
+        let content = 'The following pokemons already exist: <br>\n';
         duplicatesPokemons.forEach(({
             pokemon
         }) => {
-            content += `id: ${pokemon.id}, name: ${pokemon.name} \n`;
+            content += `id: ${pokemon.id}, name: ${pokemon.name} <br>\n`;
         });
         this.toggleSpinner(false);
-        alert(content);
+        this.alert(content, this.ALERT_TYPE.WARNING);
     }
 
     toggleSpinner(animate) {
@@ -152,6 +160,7 @@ class Main {
     }
 
     showContent(content) {
+        console.log(content);
         this.todoList.innerHTML = content;
         this.todoInput.value = '';
     }
@@ -201,7 +210,7 @@ class Main {
     }
 
     showSelectedTodo(element) {
-        alert(element.message);
+        this.alert(this.showTaskDetails(element), this.ALERT_TYPE.INFO);
     }
 
     openEditTodo(element) {
@@ -236,6 +245,20 @@ class Main {
         this.addBtn.disabled = typeof disabled == 'boolean' ? disabled : !this.addBtn.disabled;
         this.sortOrder.disabled = typeof disabled == 'boolean' ? disabled : !this.sortOrder.disabled;
         this.deleteAllBtn.disabled = typeof disabled == 'boolean' ? disabled : !this.deleteAllBtn.disabled;
+    }
+
+    closeAlertBox(event) {
+        this.alertBox.classList.remove("show", this.ALERT_TYPE.WARNING, this.ALERT_TYPE.INFO);
+    }
+
+    showTaskDetails(element) {
+        return `<span><span>To do:</span> ${element.message}</span></br>
+      ${element.checked ? `Challange completed` : `Challange is yet completed`} `;
+    }
+
+    alert(alert, type) {
+            this.alertBox.classList.add("show", type);
+            this.alertBoxText.innerHTML = alert;
     }
 }
 
