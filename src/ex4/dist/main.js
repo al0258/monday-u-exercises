@@ -30,7 +30,7 @@ class Main {
         this.editTodoApproveBtn.addEventListener('click', (event) => this._onEditTodoApproveButton(event));
         this.editTodoCancelBtn.addEventListener('click', (event) => this._onEditTodoCancelButton(event));
         this.deleteAllBtn.addEventListener('click', (event) => this._onDeleteAllButtonClicked(event));
-        this.alertBoxCloseBtn.addEventListener("click", (event) => {this.closeAlertBox(event)});
+        this.alertBoxCloseBtn.addEventListener("click", () => {this.closeAlertBox()});
         this._setSortBy();
     }
 
@@ -247,7 +247,7 @@ class Main {
         this.deleteAllBtn.disabled = typeof disabled == 'boolean' ? disabled : !this.deleteAllBtn.disabled;
     }
 
-    closeAlertBox(event) {
+    closeAlertBox() {
         this.alertBox.classList.remove("show", this.ALERT_TYPE.WARNING, this.ALERT_TYPE.INFO);
     }
 
