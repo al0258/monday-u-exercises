@@ -76,10 +76,10 @@ class ItemManager {
 
     async _handleItem(item) {
         const response = { item };
-        // const isExist = await this._isTodoExist(item);
-        // if (isExist) {
-        //     return isExist;
-        // }
+        const isExist = await this._isTodoExist(item);
+        if (isExist) {
+            return isExist;
+        }
         const pokemon = await this.pokemonClient.getPokemon(item.toLowerCase());
         if (pokemon.success) {
             response.type = 'pokemon';

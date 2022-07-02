@@ -117,7 +117,6 @@ class Main {
     }
 
     _checkForDuplicateTodos(todos) {
-
         const duplicates = todos.filter(item => (item.type == 'pokemonExists' || item.type=='todoExists'));
         if (!duplicates.length) {
             return;

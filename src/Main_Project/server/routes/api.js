@@ -46,7 +46,7 @@ router.put('/todo/:id', validateSchema(validateIdSchema), (req, res, next) => {
     errWrapper(async () => {
         const { id } = req.params
         const { todo } = req.body
-        const data = itemManager.editItem(id, todo);
+        const data = await itemManager.editItem(id, todo);
         if (!data) {
             return res.status(400).json({
                 success: false,
@@ -62,7 +62,7 @@ router.put('/todo/:id', validateSchema(validateIdSchema), (req, res, next) => {
 router.delete('/todo/:id', validateSchema(validateIdSchema), (req, res, next) => {
     errWrapper(async () => {
         const { id } = req.params
-        const data = itemManager.removeItem(id);
+        const data = await itemManager.removeItem(id);
         res.status(200).json(data);
     }, next);
 });
