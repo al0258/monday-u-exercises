@@ -91,9 +91,7 @@ class ItemManager {
             response.type = 'text';
         }
         this._handleTodoMessage(response);
-        // console.log(item);
         const newItem = await this.insertItem(response);
-        console.log("ffffff"+response);
 
         return newItem;
     }
@@ -101,7 +99,8 @@ class ItemManager {
     async insertItem({ item, pokemon, type, message }) {
         const id = generateUniqueID();
         try {
-            
+            console.log('jejuefadfaldj',);
+            console.log('jejuefadfaldj',message);
             await Item.create({
                 'item_id': id,
                 'item_name': item,
@@ -110,7 +109,7 @@ class ItemManager {
                 'item_status': false,
                 'pokemon_id': pokemon?.id.toString() || null,
                 'pokemon_name': pokemon?.name || null,
-                "pokemon_type": 'fire',
+                "pokemon_type": pokemon?.types.map(poke => capitalizeText(poke.type.name)).join('/') || null,
                 "pokemon_image": pokemon?.sprites.front_default || null
             });
         } catch (error) {
