@@ -1,5 +1,7 @@
-import express from 'express'
-import PokemonClient from "../clients/pokemon_client.js";
+// import express from 'express'
+// import PokemonClient from "../clients/pokemon_client.js";
+const express = require('express');
+const PokemonClient = require('../clients/pokemon_client.js');
 
 const router = express.Router();
 const pokemonClient = new PokemonClient;
@@ -9,5 +11,5 @@ router.get('/:pokemon', async (req, res, next) => {
     res.status(200).json(data);
 });
 
-export default router;
+module.exports = router;
 

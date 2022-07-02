@@ -1,7 +1,7 @@
 // The Pokemon Client (using axios) goes here
-
-import axios from "axios";
-export default class PokemonClient {
+const axios = require ('axios');
+// import axios from "axios";
+class PokemonClient {
     constructor() {
         this._API_BASE = 'https://pokeapi.co/api/v2/pokemon';
         this._CACHE_TIMEOUT_MS = 1000 * 60;
@@ -49,3 +49,4 @@ export default class PokemonClient {
         setTimeout(() => this._cache.delete(pokemon), this._CACHE_TIMEOUT_MS);
     }
 }
+module.exports = PokemonClient;

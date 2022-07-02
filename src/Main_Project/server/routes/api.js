@@ -1,16 +1,20 @@
 // Define your endpoints here (this is your "controller file")
 
-import express from 'express'
-import { getTodosSchema, todoSchema, validateSchema, validateIdSchema } from '../validators/api-validators.js';
-import ItemManager from '../services/item-manager.js';
+// import express from 'express'
+// import { getTodosSchema, todoSchema, validateSchema, validateIdSchema } from '../validators/api-validators.js';
+// import ItemManager from '../services/item-manager.js';
 
-const itemManager = new ItemManager()
+const express = require('express');
+const { getTodosSchema, todoSchema, validateSchema, validateIdSchema } = require('../validators/api-validators.js');
+const itemManager = require('../services/item-manager');
+
+// const itemManager = new ItemManager()
 const router = express.Router()
 
 router.get('/todos', validateSchema(getTodosSchema), (req, res, next) => {
     errWrapper(async () => {
         const { sortBy } = req.query
-        const data = itemManager.getAllItems(sortBy);
+        const data = await itemManager.getAllItems(sortBy);
         res.status(200).json(data);
     }, next);
 });
@@ -79,4 +83,5 @@ async function errWrapper(handler, next) {
     }
 }
 
-export default router;
+// export default router;
+module.exports = router;
