@@ -217,7 +217,7 @@ class Main {
         this.currentTodoEdit = element;
         this.currentTodoEdit.checked = !this.currentTodoEdit.checked;
         // await this.itemClient.editTodo(this.currentTodoEdit.id, this.currentTodoEdit);
-        await this.itemClient.editTodo(element.id, {type: element.type, item: element.item, checked: !element.checked, doneTimestamp: Date.now()});
+        await this.itemClient.editTodo(element.id, {type: element.type, item: element.item, checked: element.checked, doneTimestamp: Date.now()});
         document.getElementById(`todo-checkbox-${element.id}`).classList.toggle("todo-item-checkbox-clicked");
         // await this.render();
     }
