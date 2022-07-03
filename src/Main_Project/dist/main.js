@@ -19,7 +19,7 @@ class Main {
         this.ALERT_TYPE = {
             WARNING: 'warning',
             INFO: 'info'
-          }
+        }
     }
 
     init() {
@@ -30,7 +30,9 @@ class Main {
         this.editTodoApproveBtn.addEventListener('click', (event) => this._onEditTodoApproveButton(event));
         this.editTodoCancelBtn.addEventListener('click', (event) => this._onEditTodoCancelButton(event));
         this.deleteAllBtn.addEventListener('click', (event) => this._onDeleteAllButtonClicked(event));
-        this.alertBoxCloseBtn.addEventListener("click", () => {this.closeAlertBox()});
+        this.alertBoxCloseBtn.addEventListener("click", () => {
+            this.closeAlertBox()
+        });
         this._setSortBy();
     }
 
@@ -94,7 +96,12 @@ class Main {
     }
 
     async _onEditTodoApproveButton() {
-        await this.itemClient.editTodo(this.currentTodoEdit.id, {type: this.currentTodoEdit.type, item: this.editTodoInput.value, checked: this.currentTodoEdit.checked});
+        await this.itemClient.editTodo(this.currentTodoEdit.id, {
+            type: this.currentTodoEdit.type,
+            item: this.editTodoInput.value,
+            checked: this.currentTodoEdit.checked,
+            doneTimestamp: this.currentTodoEdit.doneTimestamp
+        });
         this.editTodoElement.style.display = 'none';
         this._toggleElementsForEditTodo();
         await this.render();
@@ -117,15 +124,15 @@ class Main {
     }
 
     _checkForDuplicateTodos(todos) {
-        const duplicates = todos.filter(item => (item.type == 'pokemonExists' || item.type=='todoExists'));
+        const duplicates = todos.filter(item => (item.type == 'pokemonExists' || item.type == 'todoExists'));
         if (!duplicates.length) {
             return;
         }
         let content = 'The following todos already exist: <br>\n';
         duplicates.forEach((todo) => {
-            if(todo.type=='pokemonExists'){
+            if (todo.type == 'pokemonExists') {
                 content += `id: ${todo.pokemon.id}, name: ${todo.pokemon.name} <br>\n`;
-            }else{
+            } else {
                 content += `${todo.item}<br>\n`
             }
         });
@@ -144,9 +151,9 @@ class Main {
 
     showPendingTodos() {
         const pendingTodos = document.querySelector(".pending-todos");
+        pendingTodos.textContent = this.todoListData.length;
         // const tmp = await this.itemClient.getPendingTodos();
         // pendingTodos.textContent = tmp.body.count;
-        pendingTodos.textContent = this.todoListData.length;
     }
 
     async getTodoListData() {
@@ -172,13 +179,11 @@ class Main {
     }
 
     showContent(content) {
-        // console.log(content);
         this.todoList.innerHTML = content;
         this.todoInput.value = '';
     }
 
     _handleTodoListContent(element, index) {
-        // console.log(element);
         const checked = element.checked ? 'checked' : '';
         const checkedclass = element.checked ? 'todo-item-checkbox-clicked' : '';
         const pic = element.type === 'pokemon' ? `<img class="pokemon-pic" src="${element.pokemon.image}" alt="">` : '&emsp;&emsp;';
@@ -216,8 +221,18 @@ class Main {
     async toggleChecked(element) {
         this.currentTodoEdit = element;
         this.currentTodoEdit.checked = !this.currentTodoEdit.checked;
+        if (this.currentTodoEdit.checked) {
+            this.currentTodoEdit.doneTimestamp = Date.now();
+        } else {
+            this.currentTodoEdit.doneTimestamp = null;
+        }
         // await this.itemClient.editTodo(this.currentTodoEdit.id, this.currentTodoEdit);
-        await this.itemClient.editTodo(element.id, {type: element.type, item: element.item, checked: element.checked, doneTimestamp: Date.now()});
+        await this.itemClient.editTodo(element.id, {
+            type: element.type,
+            item: element.item,
+            checked: element.checked,
+            doneTimestamp: element.doneTimestamp
+        });
         document.getElementById(`todo-checkbox-${element.id}`).classList.toggle("todo-item-checkbox-clicked");
         // await this.render();
     }
@@ -266,12 +281,13 @@ class Main {
 
     showTaskDetails(element) {
         return `<span><span>To do:</span> ${element.message}</span></br>
-      ${element.checked ? `Challange completed` : `Challange is yet completed`} `;
+      ${element.checked ? `Challange completed` : `Challange is yet completed`} </br>
+      ${element.doneTimestamp? `Finished on: ${new Date(element.doneTimestamp).toDateString()}`:``}`;
     }
 
     alert(alert, type) {
-            this.alertBox.classList.add("show", type);
-            this.alertBoxText.innerHTML = alert;
+        this.alertBox.classList.add("show", type);
+        this.alertBoxText.innerHTML = alert;
     }
 }
 

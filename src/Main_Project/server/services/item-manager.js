@@ -11,6 +11,7 @@ const { generateUniqueID, capitalizeText } = require ("../../utils/string-utils.
 const {Item} = require ("../db/models");
 const res = require("express/lib/response");
 const Op = require('sequelize').Op;
+const DataTypes = require('sequelize')
 
 const TODO_MASSAGES = {
     POKEMON_NOT_FOUND: 'pokemonNotFound',
@@ -36,9 +37,10 @@ class ItemManager {
     async editItem(id, item) {
         const updatedObject = {
             item_name: item.item,
-            item_status: item.checked,
+            item_status: item.checked,   
             item_done_timestamp: item.doneTimestamp ? item.doneTimestamp : null
         };
+        console.log(item.doneTimestamp);
 
         if(item.type === 'text'){
             this._handleTodoMessage(item);
@@ -99,8 +101,6 @@ class ItemManager {
     async insertItem({ item, pokemon, type, message }) {
         const id = generateUniqueID();
         try {
-            console.log('jejuefadfaldj',);
-            console.log('jejuefadfaldj',message);
             await Item.create({
                 'item_id': id,
                 'item_name': item,
@@ -200,7 +200,6 @@ class ItemManager {
                 name: item.pokemon_name,
                 type: item.pokemon_type,
                 image: item.pokemon_image,
-                // done_timestamp: DataTypes.DATE
             }
         }
         return {
@@ -209,7 +208,8 @@ class ItemManager {
             type: item.item_type,
             checked: item.item_status,
             message: item.item_message,
-            pokemon: pokemon
+            pokemon: pokemon,
+            doneTimestamp: item.item_done_timestamp
         }
     }
 }

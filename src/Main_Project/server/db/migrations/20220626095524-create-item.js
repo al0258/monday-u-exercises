@@ -17,9 +17,6 @@ module.exports = {
       item_message: {
         type: Sequelize.STRING
       },
-      item_status: {
-        type: Sequelize.BOOLEAN
-      },
       pokemon_id: {
         type: Sequelize.STRING
       },
@@ -34,11 +31,13 @@ module.exports = {
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: new Date()
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: new Date()
       }
     });
   },

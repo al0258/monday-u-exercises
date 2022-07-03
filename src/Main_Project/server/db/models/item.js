@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     pokemon_name: DataTypes.STRING,
     pokemon_type: DataTypes.STRING,
     pokemon_image: DataTypes.STRING,
-    // done_timestamp: DataTypes.DATE
+    item_done_timestamp: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'Item',
