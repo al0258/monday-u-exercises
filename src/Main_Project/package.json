@@ -4,7 +4,6 @@
   "description": "You know what they say about #4: you'll remember it *for*ever (ha)",
   "main": "src/index.js",
   "bin": "src/index.js",
-  "type": "module",
   "scripts": {
     "start": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -22,9 +21,12 @@
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "express-validator": "^6.14.1",
-    "node-fetch": "^3.2.4"
+    "mysql2": "^2.3.3",
+    "node-fetch": "^3.2.4",
+    "sequelize": "^6.21.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.16"
+    "nodemon": "^2.0.16",
+    "sequelize-cli": "^6.4.1"
   }
 }

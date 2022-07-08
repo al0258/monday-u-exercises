@@ -1,11 +1,16 @@
 // Express boilerplate, hosting the `dist` file, connecting to the routes
-
-import dotenv from 'dotenv'
-import express from 'express'
-import errorHandler from './server/middleware/error_handler.js'
-import logger from './server/middleware/logger.js'
-import todosRouter from './server/routes/api.js'
-import pokemonRouter from './server/routes/pokemon.js'
+const dotenv = require('dotenv');
+const express = require('express');
+const errorHandler = require('./server/middleware/error_handler.js');
+const logger = require('./server/middleware/logger.js');
+const todosRouter = require('./server/routes/api.js');
+const pokemonRouter = require('./server/routes/pokemon.js');
+// import dotenv from 'dotenv'
+// import express from 'express'
+// import errorHandler from './server/middleware/error_handler.js'
+// import logger from './server/middleware/logger.js'
+// import todosRouter from './server/routes/api.js'
+// import pokemonRouter from './server/routes/pokemon.js'
 
 dotenv.config();
 

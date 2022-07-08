@@ -1,8 +1,17 @@
 // The ItemManager should go here. Remember that you have to export it.
 
-import FileSystemManager from "./file-system-manager.js";
-import PokemonClient from "../clients/pokemon_client.js";
-import { generateUniqueID, capitalizeText } from "../../utils/string-utils.js";
+// import FileSystemManager from "./file-system-manager.js";
+// import PokemonClient from "../clients/pokemon_client.js";
+// import { generateUniqueID, capitalizeText } from "../../utils/string-utils.js";
+// import {Item} from "../db/models/item.js";
+// import res from "express/lib/response";
+// import Op from 'sequelize'
+const PokemonClient = require ("../clients/pokemon_client.js");
+const { generateUniqueID, capitalizeText } = require ("../../utils/string-utils.js");
+const {Item} = require ("../db/models");
+const res = require("express/lib/response");
+const Op = require('sequelize').Op;
+const DataTypes = require('sequelize')
 
 const TODO_MASSAGES = {
     POKEMON_NOT_FOUND: 'pokemonNotFound',
@@ -10,10 +19,11 @@ const TODO_MASSAGES = {
     POKEMON: 'pokemon'
   }
 
-export default class ItemManager {
+class ItemManager {
     constructor() {
         this.pokemonClient = new PokemonClient;
-        this.fileSystemManager = new FileSystemManager;
+        // this.fileSystemManager = new FileSystemManager;
+        this.itemAmount = 0;
     }
 
     async addItem(userInput) {
@@ -24,69 +34,99 @@ export default class ItemManager {
         return Promise.all(items.map(item => this._handleItem(item)));
     }
 
-    editItem(id, item) {
-        const newItem = this.fileSystemManager.editItem(id, item);
-        return newItem;
+    async editItem(id, item) {
+        const updatedObject = {
+            item_name: item.item,
+            item_status: item.checked,   
+            item_done_timestamp: item.doneTimestamp ? item.doneTimestamp : null
+        };
+        console.log(item.doneTimestamp);
+
+        if(item.type === 'text'){
+            this._handleTodoMessage(item);
+            updatedObject.item_message = item.message
+        }
+
+        await Item.update(updatedObject,{
+            where: {item_id:id}
+        })
+        const newItem = await this.getItem(id);
+        return newItem.dataValues;
     }
 
     getItem(item) {
-        return this.fileSystemManager.getItemFromFileById(item);
+        return Item.findByPk(item);
     }
 
-    getAllItems(sortOrder) {
-        return this.sortTasks(sortOrder);
+    async getAllItems(sortOrder) {
+        const items = await Item.findAll();
+        const data = items.map(item => this._prepareItem(item.dataValues));
+        return this.sortTasks(sortOrder, data);
     }
 
-    getItemsLength() {
-        return this.fileSystemManager.getAllItems()?.length;
-    }
+    // getItemsLength() {
+    //     return this.fileSystemManager.getAllItems()?.length;
+    // }
 
-    removeItem(id) {
+    async removeItem(id) {
         if (id) {
-            return this.fileSystemManager.removeItemFromFile(id);
+            return await Item.destroy({where: {item_id:id}, });
+            // return this.fileSystemManager.removeItemFromFile(id);
         }
-        return this.fileSystemManager.cleanTodoFile();
+        return await Item.destroy({where:{}, truncate:true});
     }
 
     async _handleItem(item) {
         const response = { item };
-        const pokemonExist = this.checkIfPokemonExists(item);
-        if (pokemonExist) {
-            response.type = 'pokemonExists';
-            response.pokemon = pokemonExist.pokemon;
-            return response;
+        const isExist = await this._isTodoExist(item);
+        if (isExist) {
+            return isExist;
         }
         const pokemon = await this.pokemonClient.getPokemon(item.toLowerCase());
         if (pokemon.success) {
             response.type = 'pokemon';
-            response.pokemon = {name:pokemon.body.name, id:pokemon.body.id, image:pokemon.body.sprites.front_default, types:pokemon.body.types}
-            
+            response.pokemon = pokemon.body;
         }
         else if (pokemon.error && !isNaN(item) && !item.toString().includes('.')) {
             response.type = 'pokemonNotFound';
         } else {
             response.type = 'text';
         }
-        response.checked = false;
         this._handleTodoMessage(response);
-        const newItem = this.insertItem(response);
+        const newItem = await this.insertItem(response);
 
         return newItem;
     }
 
-    insertItem({ item, pokemon, type, message, checked }) {
-        return this.fileSystemManager.addItemToFile({
-            id: generateUniqueID(),
+    async insertItem({ item, pokemon, type, message }) {
+        const id = generateUniqueID();
+        try {
+            await Item.create({
+                'item_id': id,
+                'item_name': item,
+                'item_type': type,
+                'item_message': message,
+                'item_status': false,
+                'pokemon_id': pokemon?.id.toString() || null,
+                'pokemon_name': pokemon?.name || null,
+                "pokemon_type": pokemon?.types.map(poke => capitalizeText(poke.type.name)).join('/') || null,
+                "pokemon_image": pokemon?.sprites.front_default || null
+            });
+        } catch (error) {
+            console.log(error);
+        }
+
+        return {
+            id,
             type,
             item,
             pokemon,
-            message,
-            checked
-        });
+            message
+        };
     }
 
-    _handleTodoMessage(todo) {
-        switch (todo.type) {
+    _handleTodoMessage(todo, type) {
+        switch (todo.type || type) {
             // case 'notFoundPokemons': {
             //     todo.message = `Failed to fetch pokemon with this input: ${todo.item}`;
             //     break;
@@ -107,18 +147,71 @@ export default class ItemManager {
         }
     }
 
-    checkIfPokemonExists(pokemon) {
-        const taskListData = this.fileSystemManager.getAllItems();
-        return taskListData?.find(data => (data.pokemon?.id == pokemon || data.pokemon?.name == pokemon.toLowerCase()));
-    }
-
-    sortTasks(sortOrder) {
-        const taskListData = this.fileSystemManager.getAllItems();
-        taskListData?.sort((a, b) => a.message > b.message ? 1 : a.message < b.message ? -1 : 0);
-        if (sortOrder === 'Z-A') {
-            taskListData?.reverse();
+    async _isTodoExist(item) {
+        const itemFound = (await Item.findOne({
+            where:
+            {
+                [Op.or]:
+                    [{ item_name: { [Op.eq]: item } },
+                    { pokemon_id: { [Op.eq]: item } },
+                    { pokemon_name: { [Op.eq]: item } }]
+            }
+        }))
+            ?.dataValues;
+        let res = {};
+        if (itemFound) {
+            if (itemFound.item_type == 'pokemon') {
+                res.type = 'pokemonExists';
+                res.pokemon = {
+                    id: itemFound.pokemon_id,
+                    name: itemFound.pokemon_name,
+                    type: itemFound.pokemon_type,
+                    image: itemFound.pokemon_image
+                };
+            }
+            else if (itemFound.item_type == 'text') {
+                res.type = 'todoExists';
+                res.item = item;
+            }
         }
-        return taskListData;
+        return Object.keys(res).length ? res : null;
     }
 
+
+    async checkIfPokemonExists(pokemon) {
+        return !isNaN(pokemon) ?
+        (await Item.findOne({ where: { [Op.or]: [{ pokemon_id: { [Op.eq]: pokemon } }, { pokemon_name: { [Op.eq]: pokemon } }] } })) :
+        false;
+    }
+
+    sortTasks(sortOrder, itemsListData) {
+        itemsListData?.sort((a, b) => a.message > b.message ? 1 : a.message < b.message ? -1 : 0);
+        if (sortOrder === 'Z-A') {
+            itemsListData?.reverse();
+        }
+        return itemsListData;
+    }
+
+    _prepareItem(item) {
+        let pokemon = {};
+        if (item.item_type == 'pokemon') {
+            pokemon = {
+                id: item.pokemon_id,
+                name: item.pokemon_name,
+                type: item.pokemon_type,
+                image: item.pokemon_image,
+            }
+        }
+        return {
+            id: item.item_id,
+            item: item.item_name,
+            type: item.item_type,
+            checked: item.item_status,
+            message: item.item_message,
+            pokemon: pokemon,
+            doneTimestamp: item.item_done_timestamp
+        }
+    }
 }
+
+module.exports = new ItemManager();
